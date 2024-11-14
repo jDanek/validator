@@ -103,7 +103,7 @@ class Chain
      * @param int|float $min
      * @param int|float $max
      */
-    public function between($min, $max): self
+    public function between($min, $max = null): self
     {
         return $this->addRule($this->ruleFactory->createByName('between', [$min, $max]));
     }
