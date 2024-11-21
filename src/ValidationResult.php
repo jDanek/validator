@@ -6,6 +6,11 @@ namespace Danek\Validator;
 
 class ValidationResult
 {
+    public const NESTING_KEY_REASON = 'key.reason';
+    public const NESTING_REASON_KEY = 'reason.key';
+    public const NESTING_KEY = 'key';
+    public const NESTING_REASON = 'reason';
+
     /** @var bool */
     protected $isValid;
 
@@ -35,14 +40,37 @@ class ValidationResult
         return !$this->isValid;
     }
 
-    public function getMessages(): array
+    /**
+     * @param string|null $nesting see NESTING_* constants in ValidationResult
+     */
+    public function getMessages(?string $nesting = self::NESTING_KEY_REASON): array
     {
         if ($this->messages === null) {
             $this->messages = [];
+
             foreach ($this->failures as $failure) {
-                $this->messages[$failure->getKey()][$failure->getReason()] = $failure->format();
+                $formattedMessage = $failure->format();
+
+                switch ($nesting) {
+                    case self::NESTING_KEY:
+                        $this->messages[$failure->getKey()] = $formattedMessage;
+                        break;
+                    case self::NESTING_REASON:
+                        $this->messages[$failure->getReason()] = $formattedMessage;
+                        break;
+                    case self::NESTING_KEY_REASON:
+                        $this->messages[$failure->getKey()][$failure->getReason()] = $formattedMessage;
+                        break;
+                    case self::NESTING_REASON_KEY:
+                        $this->messages[$failure->getReason()][$failure->getKey()] = $formattedMessage;
+                        break;
+                    default: // null or invalid input, default behavior
+                        $this->messages[] = $formattedMessage;
+                        break;
+                }
             }
         }
+
         return $this->messages;
     }
 
