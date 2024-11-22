@@ -133,6 +133,14 @@ class Chain
     }
 
     /**
+     * Alias for datetime().
+     */
+    public function date(?string $format = null): self
+    {
+        return $this->datetime($format);
+    }
+
+    /**
      * Validates that all characters of the value are decimal digits.
      */
     public function digits(): self
