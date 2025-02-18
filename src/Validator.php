@@ -12,6 +12,7 @@ class Validator
      * The default context (if no context is currently active).
      */
     const DEFAULT_CONTEXT = 'default';
+
     /** @var array<string, string> */
     public static $rulesMap = [
         'alpha_num' => Rule\AlphaNumRule::class,
@@ -42,14 +43,18 @@ class Validator
         'url' => Rule\UrlRule::class,
         'uuid' => Rule\UuidRule::class,
     ];
+
     /** @var array<string, array<Chain>} */
     protected $chains = [
         self::DEFAULT_CONTEXT => [],
     ];
+
     /** @var array<string, MessageStack> */
     protected $messageStacks = [];
+
     /** @var string */
     protected $currentContextName;
+
     /** @var RuleFactory */
     protected $ruleFactory;
 
