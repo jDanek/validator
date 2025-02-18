@@ -10,6 +10,7 @@ class ValidationResult
     public const NESTING_REASON_KEY = 'reason.key';
     public const NESTING_KEY = 'key';
     public const NESTING_REASON = 'reason';
+    public const NESTING_NONE = null;
 
     /** @var bool */
     protected $isValid;
@@ -64,6 +65,7 @@ class ValidationResult
                     case self::NESTING_REASON_KEY:
                         $this->messages[$failure->getReason()][$failure->getKey()] = $formattedMessage;
                         break;
+                    case self::NESTING_NONE:
                     default: // null or invalid input, default behavior
                         $this->messages[] = $formattedMessage;
                         break;
