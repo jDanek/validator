@@ -13,13 +13,17 @@ class UuidRule extends RegexRule
     /**
      * UUID NIL & version binary masks
      */
-    const UUID_VALID = 0b0000100;
-    const UUID_NIL = 0b0000001;
-    const UUID_V1 = 0b0000010;
-    const UUID_V2 = 0b0001000;
-    const UUID_V3 = 0b0010000;
-    const UUID_V4 = 0b0100000;
-    const UUID_V5 = 0b1000000;
+    const UUID_VALID = 0b00000100;
+    const UUID_NIL = 0b00000001;
+    const UUID_V1 = 0b00000010;
+    const UUID_V2 = 0b00001000;
+    const UUID_V3 = 0b00010000;
+    const UUID_V4 = 0b00100000;
+    const UUID_V5 = 0b01000000;
+    const UUID_V6 = 0b10000000;
+    const UUID_V7 = 0b000100000000;
+    const UUID_V8 = 0b001000000000;
+
 
     /**
      * An array of all validation regexes.
@@ -34,6 +38,9 @@ class UuidRule extends RegexRule
         self::UUID_V3 => '~^[0-9a-f]{8}-[0-9a-f]{4}-3[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$~i',
         self::UUID_V4 => '~^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$~i',
         self::UUID_V5 => '~^[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$~i',
+        self::UUID_V6 => '~^[0-9a-f]{8}-[0-9a-f]{4}-6[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$~i',
+        self::UUID_V7 => '~^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$~i',
+        self::UUID_V8 => '~^[0-9a-f]{8}-[0-9a-f]{4}-8[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$~i',
     ];
 
     /**
@@ -49,6 +56,9 @@ class UuidRule extends RegexRule
         self::UUID_V3 => 'v3',
         self::UUID_V4 => 'v4',
         self::UUID_V5 => 'v5',
+        self::UUID_V6 => 'v6',
+        self::UUID_V7 => 'v7',
+        self::UUID_V8 => 'v8',
     ];
 
     /**
@@ -69,7 +79,7 @@ class UuidRule extends RegexRule
 
     public function __construct(int $version = self::UUID_VALID)
     {
-        if ($version >= (self::UUID_V5 * 2) || $version < 0) {
+        if ($version > self::UUID_V8 || $version < 0) {
             throw new InvalidArgumentException(
                 'Invalid UUID version mask given. Please choose one of the constants on the Uuid class.'
             );
